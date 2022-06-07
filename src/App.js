@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
-
+import axios from "axios";
+// ff57555c;
+import { useState, useEffect } from "react";
+import "./App.css";
+import * as ReactBootstrap from "react-bootstrap";
 function App() {
+  const [lyricsItem, setLyricsItem] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const lyricsFunction = async (title) => {
+    try {
+      const data = await axios
+        .get(`https://www.omdbapi.com?apikey=ff57555c&s=${title}`)
+        .then((res) => {
+          console.log(res.data.Search);
+          setLyricsItem(res.data.Search);
+        });
+      setLoading(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    lyricsFunction("spiderman");
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading ? (
+        lyricsItem.map((item) => {
+          return (
+            <>
+              <img src={item.Poster} alt="" />
+            </>
+          );
+        })
+      ) : (
+        <div className="spiner">
+          <ReactBootstrap.Spinner animation="border" />
+        </div>
+      )}
     </div>
   );
 }
