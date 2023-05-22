@@ -8,10 +8,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const lyricsFunction = async (title) => {
     try {
-      const data = await axios
-        .get(`https://www.omdbapi.com?apikey=ff57555c&s=${title}`)
+    await axios.get(`https://www.omdbapi.com?apikey=ff57555c&s=${title}`)
         .then((res) => {
-          console.log(res.data.Search);
           setLyricsItem(res.data.Search);
         });
       setLoading(true);
